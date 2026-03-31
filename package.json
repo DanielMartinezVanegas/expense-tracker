@@ -2,7 +2,7 @@
   "name": "expense-tracker",
   "version": "1.0.0",
   "description": "Single-page Expense Tracker built with HTML, CSS, JavaScript, Node.js, Express, and MySQL",
-  "main": "server/server.js",
+  "main" : "server/server.js",
   "scripts": {
     "start": "node server/server.js"
   },
