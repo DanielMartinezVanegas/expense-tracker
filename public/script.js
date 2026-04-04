@@ -11,6 +11,14 @@ const categorySummary = document.getElementById("category-summary");
 const message = document.getElementById("message");
 const cancelEditBtn = document.getElementById("cancel-edit");
 
+amountInput.addEventListener("blur", () => {
+  const value = amountInput.value.trim();
+
+  if (value === "") return;
+
+  amountInput.value = Number(value).toFixed(2);
+});
+
 function formatDate(dateString) {
   const date = new Date(dateString);
   const day = String(date.getDate()).padStart(2, "0");
@@ -18,6 +26,15 @@ function formatDate(dateString) {
   const year = date.getFullYear();
 
   return `${day}/${month}/${year}`;
+}
+
+function formatDateForInput(dateString) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
 }
 
 async function fetchExpenses() {
@@ -125,8 +142,8 @@ async function editExpense(id) {
   expenseIdInput.value = expense.id;
   titleInput.value = expense.title;
   categoryInput.value = expense.category;
-  amountInput.value = expense.amount;
-  dateInput.value = expense.expense_date;
+  amountInput.value = Number(expense.amount).toFixed(2);
+  dateInput.value = formatDateForInput(expense.expense_date);
   descriptionInput.value = expense.description || "";
 
   window.scrollTo({ top: 0, behavior: "smooth" });
