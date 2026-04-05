@@ -446,8 +446,19 @@ function showMessage(text, color) {
   message.textContent = text;
   message.style.color = color;
 
+  message.classList.remove("success", "error", "neutral");
+
+  if (color === "green") {
+    message.classList.add("success");
+  } else if (color === "red") {
+    message.classList.add("error");
+  } else {
+    message.classList.add("neutral");
+  }
+
   setTimeout(() => {
     message.textContent = "";
+    message.classList.remove("success", "error", "neutral");
   }, 3000);
 }
 

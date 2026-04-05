@@ -8,10 +8,15 @@
 </head>
 <body>
   <!-- App header shown at the top of the page -->
-  <header class="app-header">
-    <h1>Expense Tracker</h1>
-    <p>Track your spending in one simple dashboard</p>
-  </header>
+<header class="app-header">
+  <div class="brand">
+    <div class="brand-mark">ET</div>
+    <div class="brand-text">
+      <h1>Expense Tracker</h1>
+      <p>Track your spending in one simple dashboard</p>
+    </div>
+  </div>
+</header>
 
   <main class="container">
     <!-- Form card used for both adding and editing expenses -->
@@ -64,7 +69,7 @@
       </form>
 
       <!-- Area used to show success/error feedback messages -->
-      <p id="message"></p>
+      <p id="message" class="status-message"></p>
     </section>
 
     <!-- Summary card showing total, category totals, and monthly totals -->
