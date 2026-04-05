@@ -21,6 +21,7 @@ app.get("/api/expenses", (req, res) => {
   });
 });
 
+
 app.get("/api/expenses/:id", (req, res) => {
   const { id } = req.params;
   const sql = "SELECT * FROM expenses WHERE id = ?";

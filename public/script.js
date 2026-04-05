@@ -15,6 +15,8 @@ const formTitle = document.getElementById("form-title");
 const submitButton = document.getElementById("submit-button");
 const categoryFilter = document.getElementById("category-filter");
 let allExpenses = [];
+let isLoading = false;
+let currentError = "";
 
 amountInput.addEventListener("blur", () => {
   const value = amountInput.value.trim();
@@ -54,35 +56,88 @@ function exitEditMode() {
 }
 
 async function fetchExpenses() {
-  const response = await fetch("/api/expenses");
-  const expenses = await response.json();
-
-  allExpenses = expenses;
+  isLoading = true;
+  currentError = "";
+  allExpenses = [];
   applyFilter();
-  updateTotal(expenses);
+  updateTotal([]);
+
+  try {
+    const response = await fetch("/api/expenses");
+
+    if (!response.ok) {
+      throw new Error("Unable to load expenses.");
+    }
+
+    const expenses = await response.json();
+
+    allExpenses = expenses;
+    isLoading = false;
+    currentError = "";
+    applyFilter();
+    updateTotal(expenses);
+  } catch (error) {
+    isLoading = false;
+    currentError = "Unable to load expenses. Please try again.";
+    allExpenses = [];
+    applyFilter();
+    updateTotal([]);
+  }
 }
 
 function applyFilter() {
-  const selectedCategory = categoryFilter.value;
-  let filteredExpenses = allExpenses;
-
-  if (selectedCategory !== "All") {
-    filteredExpenses = allExpenses.filter((expense) => expense.category === selectedCategory);
+  if (isLoading || currentError) {
+    renderExpenses([]);
+    return;
   }
+
+  const selectedCategory = categoryFilter.value;
+
+  if (selectedCategory === "All") {
+    renderExpenses(allExpenses);
+    return;
+  }
+
+  const filteredExpenses = allExpenses.filter(
+    (expense) => expense.category === selectedCategory
+  );
 
   renderExpenses(filteredExpenses);
 }
-categoryFilter.addEventListener("change", () => {
-  applyFilter();
-});
 
 function renderExpenses(expenses) {
   expenseList.innerHTML = "";
 
-  if (expenses.length === 0) {
+  if (isLoading) {
     expenseList.innerHTML = `
       <tr>
-        <td colspan="6">No expenses found.</td>
+        <td colspan="6">Loading expenses...</td>
+      </tr>
+    `;
+    return;
+  }
+
+  if (currentError) {
+    expenseList.innerHTML = `
+      <tr>
+        <td colspan="6">${currentError}</td>
+      </tr>
+    `;
+    return;
+  }
+
+  if (expenses.length === 0) {
+    const selectedCategory = categoryFilter.value;
+
+    expenseList.innerHTML = `
+      <tr>
+        <td colspan="6">
+          ${
+            selectedCategory === "All"
+              ? "No expenses found."
+              : `No expenses found in the ${selectedCategory} category.`
+          }
+        </td>
       </tr>
     `;
     return;
@@ -113,16 +168,40 @@ function updateTotal(expenses) {
 }
 
 async function fetchCategorySummary() {
-  const response = await fetch("/api/summary/category");
-  const summary = await response.json();
-
   categorySummary.innerHTML = "";
+  const loadingItem = document.createElement("li");
+  loadingItem.textContent = "Loading category summary...";
+  categorySummary.appendChild(loadingItem);
 
-  summary.forEach((item) => {
+  try {
+    const response = await fetch("/api/summary/category");
+
+    if (!response.ok) {
+      throw new Error("Failed to load category summary.");
+    }
+
+    const summary = await response.json();
+
+    categorySummary.innerHTML = "";
+
+    if (summary.length === 0) {
+      const li = document.createElement("li");
+      li.textContent = "No category summary available.";
+      categorySummary.appendChild(li);
+      return;
+    }
+
+    summary.forEach((item) => {
+      const li = document.createElement("li");
+      li.textContent = `${item.category}: $${Number(item.total).toFixed(2)}`;
+      categorySummary.appendChild(li);
+    });
+  } catch (error) {
+    categorySummary.innerHTML = "";
     const li = document.createElement("li");
-    li.textContent = `${item.category}: $${Number(item.total).toFixed(2)}`;
+    li.textContent = "Unable to load category summary.";
     categorySummary.appendChild(li);
-  });
+  }
 }
 
 form.addEventListener("submit", async (e) => {

@@ -188,3 +188,13 @@ tbody tr:hover {
   margin-bottom: 1rem;
   max-width: 320px;
 }
+tbody td {
+  word-break: break-word;
+}
+
+tbody tr td[colspan] {
+  text-align: center;
+  font-style: italic;
+  color: #555;
+  padding: 1.2rem;
+}
