@@ -1,4 +1,6 @@
-/* Global reset and base layout */
+/* =========================
+   Global reset and base layout
+   ========================= */
 * {
   box-sizing: border-box;
 }
@@ -11,28 +13,58 @@ body {
   line-height: 1.5;
 }
 
-/* Header styling */
+/* =========================
+   Header styling
+   ========================= */
 .app-header {
-  text-align: center;
+  width: 100%;
   background: linear-gradient(135deg, #1f3c88, #2b5fc7);
   color: white;
-  padding: 2.5rem 1rem;
+  padding: 2rem 1rem;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
 }
 
-.app-header h1 {
-  margin: 0 0 0.4rem;
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.brand-mark {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+}
+
+.brand-text h1 {
+  margin: 0 0 0.35rem;
   font-size: 2rem;
   letter-spacing: 0.02em;
 }
 
-.app-header p {
+.brand-text p {
   margin: 0;
   font-size: 1rem;
   opacity: 0.95;
 }
 
-/* Main page container */
+/* =========================
+   Main page container
+   ========================= */
 .container {
   width: 90%;
   max-width: 1100px;
@@ -41,7 +73,9 @@ body {
   gap: 1.5rem;
 }
 
-/* Card-style sections */
+/* =========================
+   Card-style sections
+   ========================= */
 .card {
   background: white;
   padding: 1.5rem;
@@ -62,11 +96,23 @@ body {
   color: #1f3c88;
 }
 
-/* Form layout */
+.card.editing {
+  border: 2px solid #1f3c88;
+  box-shadow: 0 6px 18px rgba(31, 60, 136, 0.12);
+}
+
+#form-title {
+  margin-top: 0;
+}
+
+/* =========================
+   Form layout
+   ========================= */
 .form-group {
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
+  min-width: 0;
 }
 
 label {
@@ -84,6 +130,7 @@ button {
 input,
 select,
 textarea {
+  width: 100%;
   padding: 0.8rem;
   border: 1px solid #cfd6df;
   border-radius: 8px;
@@ -95,7 +142,9 @@ textarea {
   min-height: 90px;
 }
 
-/* Button styling */
+/* =========================
+   Buttons
+   ========================= */
 .button-group {
   display: flex;
   gap: 0.75rem;
@@ -125,7 +174,6 @@ button.edit-btn {
   margin-right: 0.5rem;
 }
 
-/* Interactive feedback states */
 button:hover {
   opacity: 0.94;
   transform: translateY(-1px);
@@ -153,7 +201,9 @@ textarea:focus {
   border-color: #1f3c88;
 }
 
-/* Summary styling */
+/* =========================
+   Summary styling
+   ========================= */
 .summary-box {
   font-size: 2.2rem;
   font-weight: bold;
@@ -170,91 +220,9 @@ textarea:focus {
   margin-bottom: 0.35rem;
 }
 
-/* Table layout */
-.table-wrapper {
-  overflow-x: auto;
-  border-radius: 10px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-}
-
-th,
-td {
-  text-align: left;
-  padding: 0.95rem;
-  border-bottom: 1px solid #ddd;
-  vertical-align: top;
-}
-
-th {
-  background: #eef2f7;
-  font-size: 0.95rem;
-}
-
-tbody tr:hover {
-  background: #f8fafc;
-}
-
-tbody td {
-  word-break: break-word;
-}
-
-/* Styling for loading, empty, and error rows */
-tbody tr td[colspan] {
-  text-align: center;
-  font-style: italic;
-  color: #555;
-  padding: 1.2rem;
-}
-
-/* Status / feedback messages */
-.status-message {
-  margin-top: 1rem;
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 0;
-  min-height: 0;
-}
-
-.status-message.success,
-.status-message.error,
-.status-message.neutral {
-  padding: 0.85rem 1rem;
-}
-
-.status-message.success {
-  background: #e8f5e9;
-  color: #1b5e20 !important;
-  border: 1px solid #a5d6a7;
-}
-
-.status-message.error {
-  background: #ffebee;
-  color: #b71c1c !important;
-  border: 1px solid #ef9a9a;
-}
-
-.status-message.neutral {
-  background: #f3f4f6;
-  color: #444 !important;
-  border: 1px solid #d6d9de;
-}
-
-/* Edit mode highlight */
-.card.editing {
-  border: 2px solid #1f3c88;
-  box-shadow: 0 6px 18px rgba(31, 60, 136, 0.12);
-}
-
-#form-title {
-  margin-top: 0;
-}
-
-/* Filter and sort controls */
+/* =========================
+   Filter and sort controls
+   ========================= */
 .controls-bar {
   display: flex;
   flex-wrap: wrap;
@@ -271,35 +239,9 @@ tbody tr td[colspan] {
   min-width: 220px;
 }
 
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 1rem;
-  text-align: left;
-}
-
-.brand-mark {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 1.1rem;
-  letter-spacing: 0.05em;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-}
-
-.brand-text h1 {
-  margin: 0 0 0.35rem;
-}
-
-.brand-text p {
-  margin: 0;
-}
+/* =========================
+   Monthly summary bar chart
+   ========================= */
 .monthly-chart {
   display: flex;
   flex-direction: column;
@@ -342,7 +284,120 @@ tbody tr td[colspan] {
   font-style: italic;
 }
 
+/* =========================
+   Table layout
+   ========================= */
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 10px;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  background: white;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.95rem;
+  border-bottom: 1px solid #ddd;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+th {
+  background: #eef2f7;
+  font-size: 0.95rem;
+}
+
+tbody tr:hover {
+  background: #f8fafc;
+}
+
+td:nth-child(5) {
+  white-space: normal;
+  min-width: 180px;
+}
+
+td:last-child {
+  white-space: nowrap;
+  min-width: 170px;
+}
+
+td:last-child button {
+  display: inline-block;
+  min-width: 88px;
+  margin-bottom: 0.4rem;
+}
+
+tbody tr td[colspan] {
+  text-align: center;
+  font-style: italic;
+  color: #555;
+  padding: 1.2rem;
+  white-space: normal;
+}
+
+/* =========================
+   Feedback messages
+   ========================= */
+#message {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+/* =========================
+   Mobile responsiveness
+   ========================= */
 @media (max-width: 768px) {
+  .container {
+    width: 95%;
+    margin: 1.25rem auto;
+  }
+
+  .app-header {
+    padding: 1rem;
+  }
+
+  .brand {
+    justify-content: flex-start;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .brand-mark {
+    width: 40px;
+    height: 40px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+  }
+
+  .brand-text {
+    min-width: 0;
+  }
+
+  .brand-text h1 {
+    font-size: 1.15rem;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .brand-text p {
+    display: none;
+  }
+
+  .card {
+    padding: 1.1rem;
+  }
+
+  .summary-box {
+    font-size: 1.8rem;
+  }
+
   .chart-row {
     grid-template-columns: 1fr;
     gap: 0.4rem;
@@ -351,43 +406,16 @@ tbody tr td[colspan] {
   .chart-value {
     text-align: left;
   }
-}
 
-@media (max-width: 768px) {
-  .brand {
-    gap: 0.8rem;
+  .button-group button {
+    width: 100%;
   }
 
-  .brand-mark {
-    width: 48px;
-    height: 48px;
-    font-size: 1rem;
+  table {
+    min-width: 720px;
   }
 
-  .brand-text {
-    text-align: left;
+  td:last-child button {
+    min-width: 80px;
   }
 }
-
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  .container {
-    width: 95%;
-    margin: 1.25rem auto;
-  }
-
-  .app-header {
-    padding: 2rem 1rem;
-  }
-
-  .app-header h1 {
-    font-size: 1.7rem;
-  }
-
-    .card {
-      padding: 1.1rem;
-    }
-      .summary-box {
-          font-size: 1.8rem;
-      }
-  }
