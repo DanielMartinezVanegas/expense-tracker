@@ -15,6 +15,7 @@ const formTitle = document.getElementById("form-title");
 const submitButton = document.getElementById("submit-button");
 const categoryFilter = document.getElementById("category-filter");
 const sortExpenses = document.getElementById("sort-expenses");
+const monthlySummary = document.getElementById("monthly-summary");
 let allExpenses = [];
 let isLoading = false;
 let currentError = "";
@@ -44,6 +45,16 @@ function formatDateForInput(dateString) {
 
   return `${year}-${month}-${day}`;
 }
+function formatMonthLabel(monthString) {
+  const [year, month] = monthString.split("-");
+  const date = new Date(year, month - 1);
+
+  return date.toLocaleString("en-AU", {
+    month: "long",
+    year: "numeric",
+  });
+}
+
 function enterEditMode() {
   formTitle.textContent = "Edit Expense";
   submitButton.textContent = "Update Expense";
@@ -215,6 +226,43 @@ async function fetchCategorySummary() {
   }
 }
 
+async function fetchMonthlySummary() {
+  monthlySummary.innerHTML = "";
+  const loadingItem = document.createElement("li");
+  loadingItem.textContent = "Loading monthly summary...";
+  monthlySummary.appendChild(loadingItem);
+
+  try {
+    const response = await fetch("/api/summary/monthly");
+
+    if (!response.ok) {
+      throw new Error("Failed to load monthly summary.");
+    }
+
+    const summary = await response.json();
+
+    monthlySummary.innerHTML = "";
+
+    if (summary.length === 0) {
+      const li = document.createElement("li");
+      li.textContent = "No monthly summary available.";
+      monthlySummary.appendChild(li);
+      return;
+    }
+
+    summary.forEach((item) => {
+      const li = document.createElement("li");
+      li.textContent = `${formatMonthLabel(item.month)}: $${Number(item.total).toFixed(2)}`;
+      monthlySummary.appendChild(li);
+    });
+  } catch (error) {
+    monthlySummary.innerHTML = "";
+    const li = document.createElement("li");
+    li.textContent = "Unable to load monthly summary.";
+    monthlySummary.appendChild(li);
+  }
+}
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -254,6 +302,7 @@ form.addEventListener("submit", async (e) => {
   resetForm();
   fetchExpenses();
   fetchCategorySummary();
+  fetchMonthlySummary();
 });
 
 async function editExpense(id) {
@@ -289,6 +338,7 @@ async function deleteExpense(id) {
   showMessage(result.message, "green");
   fetchExpenses();
   fetchCategorySummary();
+  fetchMonthlySummary();
 }
 
 function resetForm() {
@@ -313,6 +363,8 @@ categoryFilter.addEventListener("change", () => {
   applyFilter();
 });
 
+
+
 cancelEditBtn.addEventListener("click", () => {
   resetForm();
   showMessage("Edit cancelled.", "gray");
@@ -320,3 +372,4 @@ cancelEditBtn.addEventListener("click", () => {
 
 fetchExpenses();
 fetchCategorySummary();
+fetchMonthlySummary();

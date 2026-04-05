@@ -107,9 +107,29 @@ app.get("/api/summary/category", (req, res) => {
     ORDER BY total DESC
   `;
 
+
   db.query(sql, (err, results) => {
     if (err) {
       return res.status(500).json({ error: "Failed to fetch category summary." });
+    }
+
+    res.json(results);
+  });
+});
+
+app.get("/api/summary/monthly", (req, res) => {
+  const sql = `
+    SELECT 
+      DATE_FORMAT(expense_date, '%Y-%m') AS month,
+      SUM(amount) AS total
+    FROM expenses
+    GROUP BY DATE_FORMAT(expense_date, '%Y-%m')
+    ORDER BY month DESC
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: "Failed to fetch monthly summary." });
     }
 
     res.json(results);
