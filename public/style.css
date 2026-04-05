@@ -1,3 +1,4 @@
+/* Global reset and base layout */
 * {
   box-sizing: border-box;
 }
@@ -9,6 +10,7 @@ body {
   color: #222;
 }
 
+/* Header styling */
 .app-header {
   text-align: center;
   background: #1f3c88;
@@ -24,6 +26,7 @@ body {
   margin: 0;
 }
 
+/* Main page container */
 .container {
   width: 90%;
   max-width: 1100px;
@@ -32,17 +35,20 @@ body {
   gap: 1.5rem;
 }
 
+/* Card-style sections */
 .card {
   background: white;
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
+
 .card h3 {
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
+/* Form layout */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -54,6 +60,7 @@ label {
   font-weight: bold;
 }
 
+/* Keep form controls visually consistent */
 input,
 select,
 textarea,
@@ -69,6 +76,7 @@ textarea {
   border-radius: 8px;
 }
 
+/* Button styling */
 .button-group {
   display: flex;
   gap: 0.75rem;
@@ -98,6 +106,7 @@ button.edit-btn {
   margin-right: 0.5rem;
 }
 
+/* Interactive feedback states */
 button:hover {
   opacity: 0.92;
   transform: translateY(-1px);
@@ -124,6 +133,7 @@ textarea:focus {
   outline-offset: 2px;
 }
 
+/* Summary card styles */
 .summary-box {
   font-size: 2rem;
   font-weight: bold;
@@ -135,6 +145,7 @@ textarea:focus {
   margin-top: 0.5rem;
 }
 
+/* Table layout */
 .table-wrapper {
   overflow-x: auto;
 }
@@ -156,28 +167,29 @@ th {
   background: #eef2f7;
 }
 
+tbody tr:hover {
+  background: #f8fafc;
+}
+
+tbody td {
+  word-break: break-word;
+}
+
+/* Styling for empty, loading, and error rows */
+tbody tr td[colspan] {
+  text-align: center;
+  font-style: italic;
+  color: #555;
+  padding: 1.2rem;
+}
+
+/* Message feedback area */
 #message {
   margin-top: 1rem;
   font-weight: bold;
 }
 
-@media (max-width: 768px) {
-  .container {
-    width: 95%;
-  }
-
-  .app-header {
-    padding: 1.5rem 1rem;
-  }
-
-  th,
-  td {
-    font-size: 0.95rem;
-  }
-}
-tbody tr:hover {
-  background: #f8fafc;
-}
+/* Edit mode highlight */
 .card.editing {
   border: 2px solid #1f3c88;
   box-shadow: 0 6px 18px rgba(31, 60, 136, 0.12);
@@ -186,6 +198,8 @@ tbody tr:hover {
 #form-title {
   margin-top: 0;
 }
+
+/* Filter and sort controls */
 .controls-bar {
   display: flex;
   flex-wrap: wrap;
@@ -201,13 +215,19 @@ tbody tr:hover {
   flex: 1;
   min-width: 220px;
 }
-tbody td {
-  word-break: break-word;
-}
 
-tbody tr td[colspan] {
-  text-align: center;
-  font-style: italic;
-  color: #555;
-  padding: 1.2rem;
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+  }
+
+  .app-header {
+    padding: 1.5rem 1rem;
+  }
+
+  th,
+  td {
+    font-size: 0.95rem;
+  }
 }
