@@ -1,3 +1,8 @@
+// =========================
+// DOM ELEMENT REFERENCES
+// =========================
+// These variables store references to important HTML elements
+// so the script can read user input and update the page dynamically.
 const form = document.getElementById("expense-form");
 const expenseIdInput = document.getElementById("expense-id");
 const titleInput = document.getElementById("title");
@@ -16,10 +21,22 @@ const submitButton = document.getElementById("submit-button");
 const categoryFilter = document.getElementById("category-filter");
 const sortExpenses = document.getElementById("sort-expenses");
 const monthlySummary = document.getElementById("monthly-summary");
+
+// =========================
+// STATE VARIABLES
+// =========================
+// allExpenses stores the current full expense list from the backend.
+// isLoading tracks whether data is still being fetched.
+// currentError stores any fetch error that should be shown to the user.
 let allExpenses = [];
 let isLoading = false;
 let currentError = "";
 
+/*
+  FORMAT AMOUNT INPUT
+  When the user leaves the amount field, format the value to 2 decimal places.
+  Example: 17 becomes 17.00
+*/
 amountInput.addEventListener("blur", () => {
   const value = amountInput.value.trim();
 
@@ -28,6 +45,10 @@ amountInput.addEventListener("blur", () => {
   amountInput.value = Number(value).toFixed(2);
 });
 
+/*
+  FORMAT DATE FOR DISPLAY
+  Converts a database date into DD/MM/YYYY for the table.
+*/
 function formatDate(dateString) {
   const date = new Date(dateString);
   const day = String(date.getDate()).padStart(2, "0");
@@ -37,6 +58,11 @@ function formatDate(dateString) {
   return `${day}/${month}/${year}`;
 }
 
+/*
+  FORMAT DATE FOR INPUT
+  Converts a date into YYYY-MM-DD so it works correctly with <input type="date">.
+  This is needed when loading an expense back into the form for editing.
+*/
 function formatDateForInput(dateString) {
   const date = new Date(dateString);
   const year = date.getFullYear();
@@ -45,6 +71,11 @@ function formatDateForInput(dateString) {
 
   return `${year}-${month}-${day}`;
 }
+
+/*
+  FORMAT MONTH LABEL
+  Converts a backend month string like 2026-03 into a readable label like March 2026.
+*/
 function formatMonthLabel(monthString) {
   const [year, month] = monthString.split("-");
   const date = new Date(year, month - 1);
@@ -55,18 +86,32 @@ function formatMonthLabel(monthString) {
   });
 }
 
+/*
+  ENTER EDIT MODE
+  Updates the form heading, submit button text, and card styling
+  so the user can clearly see that they are editing an existing record.
+*/
 function enterEditMode() {
   formTitle.textContent = "Edit Expense";
   submitButton.textContent = "Update Expense";
   formCard.classList.add("editing");
 }
 
+/*
+  EXIT EDIT MODE
+  Restores the form to its normal create state.
+*/
 function exitEditMode() {
   formTitle.textContent = "Add Expense";
   submitButton.textContent = "Save Expense";
   formCard.classList.remove("editing");
 }
 
+/*
+  FETCH ALL EXPENSES
+  Requests all expenses from the backend, updates the local state,
+  and then applies the active filter and sort settings.
+*/
 async function fetchExpenses() {
   isLoading = true;
   currentError = "";
@@ -97,6 +142,11 @@ async function fetchExpenses() {
   }
 }
 
+/*
+  APPLY FILTER AND SORT
+  Filters expenses by category, then sorts the filtered results
+  based on the current sort dropdown.
+*/
 function applyFilter() {
   if (isLoading || currentError) {
     renderExpenses([]);
@@ -127,6 +177,11 @@ function applyFilter() {
   renderExpenses(filteredExpenses);
 }
 
+/*
+  RENDER EXPENSE TABLE
+  Displays the loading state, error state, empty state,
+  or the full list of expenses in the table.
+*/
 function renderExpenses(expenses) {
   expenseList.innerHTML = "";
 
@@ -184,11 +239,21 @@ function renderExpenses(expenses) {
   });
 }
 
+/*
+  UPDATE TOTAL SPENT
+  Calculates the total amount from the currently fetched expense list
+  and displays it in the summary card.
+*/
 function updateTotal(expenses) {
   const total = expenses.reduce((sum, expense) => sum + Number(expense.amount), 0);
   totalSpent.textContent = `$${total.toFixed(2)}`;
 }
 
+/*
+  FETCH CATEGORY SUMMARY
+  Gets grouped totals by category from the backend
+  and displays them in the summary section.
+*/
 async function fetchCategorySummary() {
   categorySummary.innerHTML = "";
   const loadingItem = document.createElement("li");
@@ -226,6 +291,11 @@ async function fetchCategorySummary() {
   }
 }
 
+/*
+  FETCH MONTHLY SUMMARY
+  Gets grouped totals by month from the backend
+  and displays them in the summary section.
+*/
 async function fetchMonthlySummary() {
   monthlySummary.innerHTML = "";
   const loadingItem = document.createElement("li");
@@ -263,6 +333,12 @@ async function fetchMonthlySummary() {
   }
 }
 
+/*
+  FORM SUBMISSION
+  Handles both create and update actions.
+  If an expense id exists, the request updates that record.
+  If no id exists, the request creates a new one.
+*/
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -305,6 +381,11 @@ form.addEventListener("submit", async (e) => {
   fetchMonthlySummary();
 });
 
+/*
+  EDIT EXPENSE
+  Fetches a single expense and loads its values back into the form.
+  This allows the user to update an existing record.
+*/
 async function editExpense(id) {
   const response = await fetch(`/api/expenses/${id}`);
   const expense = await response.json();
@@ -320,6 +401,11 @@ async function editExpense(id) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+/*
+  DELETE EXPENSE
+  Confirms with the user first, then removes the selected expense.
+  After deletion, the summaries and list are refreshed.
+*/
 async function deleteExpense(id) {
   const confirmed = confirm("Are you sure you want to delete this expense?");
   if (!confirmed) return;
@@ -341,12 +427,21 @@ async function deleteExpense(id) {
   fetchMonthlySummary();
 }
 
+/*
+  RESET FORM
+  Clears the form and exits edit mode.
+*/
 function resetForm() {
   form.reset();
   expenseIdInput.value = "";
   exitEditMode();
 }
 
+/*
+  SHOW FEEDBACK MESSAGE
+  Displays a short success or error message for the user,
+  then clears it after a few seconds.
+*/
 function showMessage(text, color) {
   message.textContent = text;
   message.style.color = color;
@@ -355,21 +450,37 @@ function showMessage(text, color) {
     message.textContent = "";
   }, 3000);
 }
+
+/*
+  SORT CHANGE LISTENER
+  Re-renders the expense list when the sort option changes.
+*/
 sortExpenses.addEventListener("change", () => {
   applyFilter();
 });
 
+/*
+  FILTER CHANGE LISTENER
+  Re-renders the expense list when the category filter changes.
+*/
 categoryFilter.addEventListener("change", () => {
   applyFilter();
 });
 
-
-
+/*
+  CANCEL EDIT LISTENER
+  Resets the form and returns it to normal create mode.
+*/
 cancelEditBtn.addEventListener("click", () => {
   resetForm();
   showMessage("Edit cancelled.", "gray");
 });
 
+/*
+  INITIAL PAGE LOAD
+  Fetch the main expense list and both summary sections
+  as soon as the page opens.
+*/
 fetchExpenses();
 fetchCategorySummary();
 fetchMonthlySummary();
