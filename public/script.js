@@ -297,10 +297,7 @@ async function fetchCategorySummary() {
   and displays them in the summary section.
 */
 async function fetchMonthlySummary() {
-  monthlySummary.innerHTML = "";
-  const loadingItem = document.createElement("li");
-  loadingItem.textContent = "Loading monthly summary...";
-  monthlySummary.appendChild(loadingItem);
+  monthlySummary.innerHTML = "<p>Loading monthly summary...</p>";
 
   try {
     const response = await fetch("/api/summary/monthly");
@@ -314,25 +311,34 @@ async function fetchMonthlySummary() {
     monthlySummary.innerHTML = "";
 
     if (summary.length === 0) {
-      const li = document.createElement("li");
-      li.textContent = "No monthly summary available.";
-      monthlySummary.appendChild(li);
+      monthlySummary.innerHTML = "<p>No monthly summary available.</p>";
       return;
     }
 
+    // Find the largest monthly total so bar widths can be scaled proportionally
+    const maxTotal = Math.max(...summary.map((item) => Number(item.total)));
+
     summary.forEach((item) => {
-      const li = document.createElement("li");
-      li.textContent = `${formatMonthLabel(item.month)}: $${Number(item.total).toFixed(2)}`;
-      monthlySummary.appendChild(li);
+      const total = Number(item.total);
+      const percent = maxTotal > 0 ? (total / maxTotal) * 100 : 0;
+
+      const chartRow = document.createElement("div");
+      chartRow.classList.add("chart-row");
+
+      chartRow.innerHTML = `
+        <div class="chart-label">${formatMonthLabel(item.month)}</div>
+        <div class="chart-bar-wrap">
+          <div class="chart-bar" style="width: ${percent}%"></div>
+        </div>
+        <div class="chart-value">$${total.toFixed(2)}</div>
+      `;
+
+      monthlySummary.appendChild(chartRow);
     });
   } catch (error) {
-    monthlySummary.innerHTML = "";
-    const li = document.createElement("li");
-    li.textContent = "Unable to load monthly summary.";
-    monthlySummary.appendChild(li);
+    monthlySummary.innerHTML = "<p>Unable to load monthly summary.</p>";
   }
 }
-
 /*
   FORM SUBMISSION
   Handles both create and update actions.
