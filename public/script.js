@@ -13,6 +13,8 @@ const cancelEditBtn = document.getElementById("cancel-edit");
 const formCard = document.getElementById("form-card");
 const formTitle = document.getElementById("form-title");
 const submitButton = document.getElementById("submit-button");
+const categoryFilter = document.getElementById("category-filter");
+let allExpenses = [];
 
 amountInput.addEventListener("blur", () => {
   const value = amountInput.value.trim();
@@ -55,9 +57,24 @@ async function fetchExpenses() {
   const response = await fetch("/api/expenses");
   const expenses = await response.json();
 
-  renderExpenses(expenses);
+  allExpenses = expenses;
+  applyFilter();
   updateTotal(expenses);
 }
+
+function applyFilter() {
+  const selectedCategory = categoryFilter.value;
+  let filteredExpenses = allExpenses;
+
+  if (selectedCategory !== "All") {
+    filteredExpenses = allExpenses.filter((expense) => expense.category === selectedCategory);
+  }
+
+  renderExpenses(filteredExpenses);
+}
+categoryFilter.addEventListener("change", () => {
+  applyFilter();
+});
 
 function renderExpenses(expenses) {
   expenseList.innerHTML = "";
