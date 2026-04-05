@@ -96,6 +96,28 @@ button.edit-btn {
 
 button:hover {
   opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button,
+input,
+select,
+textarea,
+.card,
+tr {
+  transition: all 0.2s ease;
+}
+
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 3px solid rgba(31, 60, 136, 0.2);
+  outline-offset: 2px;
 }
 
 .summary-box {
@@ -147,4 +169,15 @@ th {
   td {
     font-size: 0.95rem;
   }
+}
+tbody tr:hover {
+  background: #f8fafc;
+}
+.card.editing {
+  border: 2px solid #1f3c88;
+  box-shadow: 0 6px 18px rgba(31, 60, 136, 0.12);
+}
+
+#form-title {
+  margin-top: 0;
 }

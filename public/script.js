@@ -10,6 +10,9 @@ const totalSpent = document.getElementById("total-spent");
 const categorySummary = document.getElementById("category-summary");
 const message = document.getElementById("message");
 const cancelEditBtn = document.getElementById("cancel-edit");
+const formCard = document.getElementById("form-card");
+const formTitle = document.getElementById("form-title");
+const submitButton = document.getElementById("submit-button");
 
 amountInput.addEventListener("blur", () => {
   const value = amountInput.value.trim();
@@ -35,6 +38,17 @@ function formatDateForInput(dateString) {
   const day = String(date.getDate()).padStart(2, "0");
 
   return `${year}-${month}-${day}`;
+}
+function enterEditMode() {
+  formTitle.textContent = "Edit Expense";
+  submitButton.textContent = "Update Expense";
+  formCard.classList.add("editing");
+}
+
+function exitEditMode() {
+  formTitle.textContent = "Add Expense";
+  submitButton.textContent = "Save Expense";
+  formCard.classList.remove("editing");
 }
 
 async function fetchExpenses() {
@@ -146,6 +160,7 @@ async function editExpense(id) {
   dateInput.value = formatDateForInput(expense.expense_date);
   descriptionInput.value = expense.description || "";
 
+  enterEditMode();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -172,6 +187,7 @@ async function deleteExpense(id) {
 function resetForm() {
   form.reset();
   expenseIdInput.value = "";
+  exitEditMode();
 }
 
 function showMessage(text, color) {
