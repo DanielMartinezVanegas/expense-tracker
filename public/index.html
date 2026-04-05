@@ -70,19 +70,32 @@
     <section class="card">
      <h2>All Expenses</h2>
 
-        <div class="filter-bar">
-            <label for="category-filter">Filter by Category</label>
-            <select id="category-filter">
-            <option value="All">All Categories</option>
-            <option value="Food">Food</option>
-            <option value="Transport">Transport</option>
-            <option value="Bills">Bills</option>
-            <option value="Entertainment">Entertainment</option>
-            <option value="Shopping">Shopping</option>
-            <option value="Health">Health</option>
-            <option value="Other">Other</option>
-            </select>
-        </div>
+   <div class="controls-bar">
+  <div class="filter-bar">
+    <label for="category-filter">Filter by Category</label>
+    <select id="category-filter">
+      <option value="All">All Categories</option>
+      <option value="Food">Food</option>
+      <option value="Transport">Transport</option>
+      <option value="Bills">Bills</option>
+      <option value="Entertainment">Entertainment</option>
+      <option value="Shopping">Shopping</option>
+      <option value="Health">Health</option>
+      <option value="Other">Other</option>
+    </select>
+  </div>
+
+  <div class="filter-bar">
+    <label for="sort-expenses">Sort By</label>
+    <select id="sort-expenses">
+      <option value="newest">Newest First</option>
+      <option value="oldest">Oldest First</option>
+      <option value="highest">Highest Amount</option>
+      <option value="lowest">Lowest Amount</option>
+      <option value="title">Title A-Z</option>
+    </select>
+  </div>
+</div>
 
   <div class="table-wrapper">
         <table>

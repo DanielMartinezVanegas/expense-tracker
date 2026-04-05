@@ -181,12 +181,20 @@ tbody tr:hover {
 #form-title {
   margin-top: 0;
 }
+.controls-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
 .filter-bar {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin-bottom: 1rem;
   max-width: 320px;
+  flex: 1;
+  min-width: 220px;
 }
 tbody td {
   word-break: break-word;

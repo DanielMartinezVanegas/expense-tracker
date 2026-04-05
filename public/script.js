@@ -14,6 +14,7 @@ const formCard = document.getElementById("form-card");
 const formTitle = document.getElementById("form-title");
 const submitButton = document.getElementById("submit-button");
 const categoryFilter = document.getElementById("category-filter");
+const sortExpenses = document.getElementById("sort-expenses");
 let allExpenses = [];
 let isLoading = false;
 let currentError = "";
@@ -93,10 +94,24 @@ function applyFilter() {
 
   const selectedCategory = categoryFilter.value;
 
-  const filteredExpenses =
+  let filteredExpenses =
     selectedCategory === "All"
-      ? allExpenses
+      ? [...allExpenses]
       : allExpenses.filter((expense) => expense.category === selectedCategory);
+
+  const sortValue = sortExpenses.value;
+
+  if (sortValue === "newest") {
+    filteredExpenses.sort((a, b) => new Date(b.expense_date) - new Date(a.expense_date));
+  } else if (sortValue === "oldest") {
+    filteredExpenses.sort((a, b) => new Date(a.expense_date) - new Date(b.expense_date));
+  } else if (sortValue === "highest") {
+    filteredExpenses.sort((a, b) => Number(b.amount) - Number(a.amount));
+  } else if (sortValue === "lowest") {
+    filteredExpenses.sort((a, b) => Number(a.amount) - Number(b.amount));
+  } else if (sortValue === "title") {
+    filteredExpenses.sort((a, b) => a.title.localeCompare(b.title));
+  }
 
   renderExpenses(filteredExpenses);
 }
@@ -290,6 +305,9 @@ function showMessage(text, color) {
     message.textContent = "";
   }, 3000);
 }
+sortExpenses.addEventListener("change", () => {
+  applyFilter();
+});
 
 categoryFilter.addEventListener("change", () => {
   applyFilter();
