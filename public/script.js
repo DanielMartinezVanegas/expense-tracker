@@ -93,14 +93,10 @@ function applyFilter() {
 
   const selectedCategory = categoryFilter.value;
 
-  if (selectedCategory === "All") {
-    renderExpenses(allExpenses);
-    return;
-  }
-
-  const filteredExpenses = allExpenses.filter(
-    (expense) => expense.category === selectedCategory
-  );
+  const filteredExpenses =
+    selectedCategory === "All"
+      ? allExpenses
+      : allExpenses.filter((expense) => expense.category === selectedCategory);
 
   renderExpenses(filteredExpenses);
 }
@@ -294,6 +290,10 @@ function showMessage(text, color) {
     message.textContent = "";
   }, 3000);
 }
+
+categoryFilter.addEventListener("change", () => {
+  applyFilter();
+});
 
 cancelEditBtn.addEventListener("click", () => {
   resetForm();
